@@ -9,6 +9,9 @@ private:
 
 public:
     Vertex(glm::vec3 &position, glm::vec3 &normal);
+    glm::vec3 getPosition();
+    void setPosition(glm::vec3 &position);
+    glm::vec3 getNormal();
     ~Vertex();
 };
 

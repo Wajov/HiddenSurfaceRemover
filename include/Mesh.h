@@ -4,11 +4,9 @@
 #include <string>
 #include <vector>
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 
 #include "Vertex.h"
-#include "Texture.h"
 
 class Mesh {
 private:

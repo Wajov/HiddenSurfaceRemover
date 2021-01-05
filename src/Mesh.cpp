@@ -11,18 +11,21 @@ void Mesh::coordinateRange(float &xMin, float &xMax, float &yMin, float &yMax, f
     xMin = yMin = zMin = FLT_MAX;
     xMax = yMax = zMax = -FLT_MAX;
     for (Vertex &vertex : vertices) {
-        xMin = std::min(xMin, vertex.position.x);
-        xMax = std::max(xMax, vertex.position.x);
-        yMin = std::min(yMin, vertex.position.y);
-        yMax = std::max(yMax, vertex.position.y);
-        zMin = std::min(zMin, vertex.position.z);
-        zMax = std::max(zMax, vertex.position.z);
+        glm::vec3 position = vertex.getPosition();
+        xMin = std::min(xMin, position.x);
+        xMax = std::max(xMax, position.x);
+        yMin = std::min(yMin, position.y);
+        yMax = std::max(yMax, position.y);
+        zMin = std::min(zMin, position.z);
+        zMax = std::max(zMax, position.z);
     }
 }
 
 void Mesh::recenter(glm::vec3 &center) {
-    for (Vertex &vertex : vertices)
-        vertex.position -= center;
+    for (Vertex &vertex : vertices) {
+        glm::vec3 position = vertex.getPosition() - center;
+        vertex.setPosition(position);
+    }
 }
 
 void Mesh::render() {

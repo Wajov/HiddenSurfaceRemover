@@ -1,6 +1,6 @@
-#include <iostream>
+#include "Model.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Model model("model/bunny.obj");
     return 0;
 }
