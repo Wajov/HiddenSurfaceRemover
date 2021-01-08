@@ -11,6 +11,7 @@
 #include <assimp/postprocess.h>
 
 #include "Mesh.h"
+#include "ZBuffer.h"
 
 class Model {
 private:
@@ -21,7 +22,7 @@ private:
 public:
     Model(const std::string &path);
     ~Model();
-    void render();
+    void render(ZBuffer *zBuffer);
 };
 
 #endif

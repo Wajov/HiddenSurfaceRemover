@@ -28,6 +28,6 @@ void Mesh::recenter(glm::vec3 &center) {
     }
 }
 
-void Mesh::render() {
-    // TODO
+void Mesh::render(ZBuffer *zBuffer) {
+    zBuffer->render(vertices, indices);
 }

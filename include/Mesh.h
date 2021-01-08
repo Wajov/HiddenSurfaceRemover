@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "Vertex.h"
+#include "ZBuffer.h"
 
 class Mesh {
 private:
@@ -18,7 +19,7 @@ public:
     ~Mesh();
     void coordinateRange(float &xMin, float &xMax, float &yMin, float &yMax, float &zMin, float &zMax);
     void recenter(glm::vec3 &center);
-    void render();
+    void render(ZBuffer *zBuffer);
 };
 
 #endif

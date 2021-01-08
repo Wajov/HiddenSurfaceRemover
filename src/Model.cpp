@@ -34,9 +34,9 @@ Model::Model(const std::string &path) {
 
 Model::~Model() {}
 
-void Model::render() {
+void Model::render(ZBuffer *zBuffer) {
     for (Mesh &mesh : meshes)
-        mesh.render();
+        mesh.render(zBuffer);
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene) {
