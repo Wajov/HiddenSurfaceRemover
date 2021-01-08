@@ -3,10 +3,10 @@
 ActiveEdge::ActiveEdge(Edge &edge) {
     x = edge.getX();
     deltaX = edge.getDeltaX();
-    y = 0;
     deltaY = edge.getDeltaY();
     z = edge.getZ();
     dz = edge.getDz();
+    s = 0;
 }
 
 ActiveEdge::~ActiveEdge() {}
@@ -20,7 +20,8 @@ float ActiveEdge::getZ() {
 }
 
 void ActiveEdge::update() {
-    y++;
-    x = x0 + deltaX / deltaY * y;
+    s += deltaX;
+    for (s += deltaX; s >= deltaY; s -= deltaY)
+        x++;
     z += dz;
 }

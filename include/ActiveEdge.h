@@ -5,7 +5,7 @@
 
 class ActiveEdge {
 private:
-    int x, deltaX, y, deltaY;
+    int x, deltaX, deltaY, s;
     float z, dz;
 
 public:

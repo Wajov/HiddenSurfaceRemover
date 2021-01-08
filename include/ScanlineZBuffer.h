@@ -1,8 +1,6 @@
 #ifndef SCANLINE_Z_BUFFER_H
 #define SCANLINE_Z_BUFFER_H
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-
 #include <algorithm>
 #include <vector>
 #include <map>
