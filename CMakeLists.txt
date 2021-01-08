@@ -3,7 +3,7 @@ project(HiddenSurfaceRemover)
 
 include_directories(include)
 aux_source_directory(src SOURCE)
-add_executable(HiddenSurfaceRemover ${SOURCE})
+add_executable(HiddenSurfaceRemover ${SOURCE} src/Polygon.cpp include/Polygon.h)
 
 # Assimp
 find_package(assimp REQUIRED)
