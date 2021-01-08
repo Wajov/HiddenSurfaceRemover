@@ -20,8 +20,11 @@ float ActiveEdge::getZ() {
 }
 
 void ActiveEdge::update() {
-    s += deltaX;
-    for (s += deltaX; s >= deltaY; s -= deltaY)
-        x++;
+    if (deltaX < 0)
+        for (s += deltaX; -s >= deltaY; s += deltaY)
+            x--;
+    else
+        for (s += deltaX; s >= deltaY; s -= deltaY)
+            x++;
     z += dz;
 }
