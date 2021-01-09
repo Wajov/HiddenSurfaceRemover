@@ -11,7 +11,8 @@
 class ActivePolygon {
 private:
     std::vector<Edge> edges;
-    std::map<int, ActiveEdge> activeEdges;
+    std::vector<Edge>::iterator iter;
+    ActiveEdge leftEdge, rightEdge;
 
 public:
     ActivePolygon(Polygon &polygon);

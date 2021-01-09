@@ -9,7 +9,7 @@ Polygon::Polygon(std::vector<Vertex> &vertices) {
     int minY = INT_MAX, maxY = INT_MIN;
     for (Edge &edge : edges) {
         minY = std::min(minY, edge.getY());
-        maxY = std::min(maxY, edge.getY() + edge.getDeltaY());
+        maxY = std::max(maxY, edge.getY() + edge.getDeltaY());
     }
     y = minY;
     deltaY = maxY - minY;
@@ -18,7 +18,10 @@ Polygon::Polygon(std::vector<Vertex> &vertices) {
 Polygon::~Polygon() {}
 
 bool Polygon::operator <(Polygon &polygon) {
-    return y < polygon.y || (y == polygon.y && y + deltaY < polygon.y + polygon.deltaY);
+    if (y != polygon.y)
+        return y < polygon.y;
+    else
+        return y + deltaY < polygon.y + polygon.deltaY;
 }
 
 std::vector<Edge> Polygon::getEdges() {

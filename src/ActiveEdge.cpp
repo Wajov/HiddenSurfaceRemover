@@ -1,8 +1,11 @@
 #include "ActiveEdge.h"
 
+ActiveEdge::ActiveEdge() {}
+
 ActiveEdge::ActiveEdge(Edge &edge) {
     x = edge.getX();
     deltaX = edge.getDeltaX();
+    y = edge.getY() + edge.getDeltaY();
     deltaY = edge.getDeltaY();
     z = edge.getZ();
     dz = edge.getDz();
@@ -13,6 +16,10 @@ ActiveEdge::~ActiveEdge() {}
 
 int ActiveEdge::getX() {
     return x;
+}
+
+int ActiveEdge::getY() {
+    return y;
 }
 
 float ActiveEdge::getZ() {

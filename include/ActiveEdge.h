@@ -5,13 +5,15 @@
 
 class ActiveEdge {
 private:
-    int x, deltaX, deltaY, s;
+    int x, deltaX, y, deltaY, s;
     float z, dz;
 
 public:
+    ActiveEdge();
     ActiveEdge(Edge &edge);
     ~ActiveEdge();
     int getX();
+    int getY();
     float getZ();
     void update();
 };

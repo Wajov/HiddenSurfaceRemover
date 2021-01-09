@@ -28,7 +28,14 @@ void Edge::coordinateToPixel(float coordinateX, float coordinateY, int &pixelX, 
 }
 
 bool Edge::operator <(Edge &edge) {
-    return y < edge.y || (y == edge.y && y + deltaY < edge.y + edge.deltaY);
+    if (y != edge.y)
+        return y < edge.y;
+    else if (y + deltaY != edge.y + edge.deltaY)
+        return y + deltaY < edge.y + edge.deltaY;
+    else if (x != edge.x)
+        return x < edge.x;
+    else
+        return x + deltaX < edge.x + edge.deltaX;
 }
 
 int Edge::getX() {

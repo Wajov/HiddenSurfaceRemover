@@ -22,13 +22,13 @@ void ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsigned
             int minX, maxX;
             float z, dz;
             pair.second.intersection(minX, maxX, z, dz);
-            for (int i = minX; i < maxX && i < width; i++) {
+            for (int i = minX; i <= maxX && i < width; i++) {
                 glm::vec3 color = calculateColor();
                 for (int j = 0; j < 3; j++)
                     output[(scanline * width + i) * 3 + j] = (unsigned char)(color[j] * 255);
             }
         }
-        while (activePolygons.begin()->first == scanline)
+        while (!activePolygons.empty() && activePolygons.begin()->first == scanline)
             activePolygons.erase(activePolygons.begin());
         for (std::pair<const int, ActivePolygon> &pair : activePolygons)
             pair.second.update();

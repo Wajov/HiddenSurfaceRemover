@@ -24,9 +24,6 @@ Model::Model(const std::string &path) {
         zMin = std::min(zMin, zMinTemp);
         zMax = std::max(zMax, zMaxTemp);
     }
-    std::cout << xMin << ' ' << xMax << std::endl;
-    std::cout << yMin << ' ' << yMax << std::endl;
-    std::cout << zMin << ' ' << zMax << std::endl;
     glm::vec3 center((xMin + xMax) / 2, (yMin + yMax) / 2, (zMin + zMax) / 2);
     for (Mesh &mesh : meshes)
         mesh.recenter(center);
