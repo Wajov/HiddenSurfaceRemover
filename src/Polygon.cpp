@@ -1,10 +1,10 @@
 #include "Polygon.h"
 
-Polygon::Polygon(std::vector<Vertex> &vertices) {
+Polygon::Polygon(std::vector<Vertex> &vertices, glm::mat4 MVP, int width, int height) {
     for (int i = 0; i < vertices.size() - 1; i++) {
-        edges.push_back(Edge(vertices[i], vertices[i + 1]));
+        edges.push_back(Edge(vertices[i], vertices[i + 1], MVP, width, height));
     }
-    edges.push_back(Edge(*vertices.rbegin(), *vertices.begin()));
+    edges.push_back(Edge(*vertices.rbegin(), *vertices.begin(), MVP, width, height));
 
     int minY = INT_MAX, maxY = INT_MIN;
     for (Edge &edge : edges) {

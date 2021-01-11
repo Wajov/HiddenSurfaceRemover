@@ -4,6 +4,8 @@
 #include <climits>
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include "Vertex.h"
 #include "Edge.h"
 
@@ -13,7 +15,7 @@ private:
     int y, deltaY;
 
 public:
-    Polygon(std::vector<Vertex> &vertices);
+    Polygon(std::vector<Vertex> &vertices, glm::mat4 MVP, int width, int height);
     ~Polygon();
     bool operator <(Polygon &polygon);
     std::vector<Edge> getEdges();

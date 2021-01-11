@@ -3,28 +3,45 @@
 ActivePolygon::ActivePolygon(Polygon &polygon) {
     edges = polygon.getEdges();
     std::sort(edges.begin(), edges.end());
-    iter = edges.begin();
-    leftEdge = ActiveEdge(*(iter++));
-    rightEdge = ActiveEdge(*(iter++));
+    index = 0;
+    for (int i = 0; i < 2; i++, index++)
+        activeEdges.insert(std::make_pair(edges[index].getY() + edges[index].getDeltaY(), ActiveEdge(edges[index])));
 }
 
 ActivePolygon::~ActivePolygon() {}
 
 void ActivePolygon::check(int scanline) {
-    if (leftEdge.getY() == scanline && iter != edges.end())
-        leftEdge = ActiveEdge(*(iter++));
-    if (rightEdge.getY() == scanline && iter != edges.end())
-        rightEdge = ActiveEdge(*(iter++));
+    while (!activeEdges.empty() && activeEdges.begin()->first == scanline) {
+        activeEdges.erase(activeEdges.begin());
+        if (index < edges.size()) {
+            activeEdges.insert(std::make_pair(edges[index].getY() + edges[index].getDeltaY(), ActiveEdge(edges[index])));
+            index++;
+        }
+    }
 }
 
 void ActivePolygon::update() {
-    leftEdge.update();
-    rightEdge.update();
+    for (std::pair<const int, ActiveEdge> &pair : activeEdges)
+        pair.second.update();
 }
 
-void ActivePolygon::intersection(int &minX, int &maxX, float &z, float &dz) {
-    minX = leftEdge.getX();
-    maxX = rightEdge.getX();
-    z = leftEdge.getZ();
-    dz = (rightEdge.getZ() - leftEdge.getZ()) / (maxX - minX);
+void ActivePolygon::intersection(int &minX, int &maxX, float &z, float &dz, glm::vec3 &p, glm::vec3 &dp, glm::vec3 &n, glm::vec3 &dn) {
+    if (activeEdges.size() < 2) {
+        minX = 0;
+        maxX = -1;
+    } else {
+        ActiveEdge left = activeEdges.begin()->second;
+        ActiveEdge right = activeEdges.rbegin()->second;
+        if (left.getX() > right.getX())
+            std::swap(left, right);
+        minX = left.getX();
+        maxX = right.getX();
+        float deltaX = maxX - minX;
+        z = left.getZ();
+        dz = (right.getZ() - left.getZ()) / deltaX;
+        p = left.getP();
+        dp = (right.getP() - left.getP()) / deltaX;
+        n = left.getN();
+        dn = (right.getP() - left.getP()) / deltaX;
+    }
 }

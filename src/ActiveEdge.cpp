@@ -5,10 +5,13 @@ ActiveEdge::ActiveEdge() {}
 ActiveEdge::ActiveEdge(Edge &edge) {
     x = edge.getX();
     deltaX = edge.getDeltaX();
-    y = edge.getY() + edge.getDeltaY();
     deltaY = edge.getDeltaY();
     z = edge.getZ();
     dz = edge.getDz();
+    p = edge.getP();
+    dp = edge.getDp();
+    n = edge.getN();
+    dn = edge.getDn();
     s = 0;
 }
 
@@ -18,12 +21,16 @@ int ActiveEdge::getX() {
     return x;
 }
 
-int ActiveEdge::getY() {
-    return y;
-}
-
 float ActiveEdge::getZ() {
     return z;
+}
+
+glm::vec3 ActiveEdge::getP() {
+    return p;
+}
+
+glm::vec3 ActiveEdge::getN() {
+    return n;
 }
 
 void ActiveEdge::update() {
@@ -34,4 +41,6 @@ void ActiveEdge::update() {
         for (s += deltaX; s >= deltaY; s -= deltaY)
             x++;
     z += dz;
+    p += dp;
+    n += dn;
 }

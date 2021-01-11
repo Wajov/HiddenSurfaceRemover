@@ -16,9 +16,9 @@ class ScanlineZBuffer : public ZBuffer {
 private:
     std::vector<Polygon> polygons;
     std::multimap<int, ActivePolygon> activePolygons;
-    glm::vec3 calculateColor();
 
 public:
+    ScanlineZBuffer(int width, int height);
     void render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 

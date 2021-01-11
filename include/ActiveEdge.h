@@ -5,16 +5,18 @@
 
 class ActiveEdge {
 private:
-    int x, deltaX, y, deltaY, s;
+    int x, deltaX, deltaY, s;
     float z, dz;
+    glm::vec3 p, dp, n, dn;
 
 public:
     ActiveEdge();
     ActiveEdge(Edge &edge);
     ~ActiveEdge();
     int getX();
-    int getY();
     float getZ();
+    glm::vec3 getP();
+    glm::vec3 getN();
     void update();
 };
 
