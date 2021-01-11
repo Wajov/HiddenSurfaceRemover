@@ -14,47 +14,43 @@ Model::Model(const std::string &path) {
     float xMin, xMax, yMin, yMax, zMin, zMax;
     xMin = yMin = zMin = FLT_MAX;
     xMax = yMax = zMax = -FLT_MAX;
-    for (Mesh &mesh : meshes) {
-        float xMinTemp, xMaxTemp, yMinTemp, yMaxTemp, zMinTemp, zMaxTemp;
-        mesh.coordinateRange(xMinTemp, xMaxTemp, yMinTemp, yMaxTemp, zMinTemp, zMaxTemp);
-        xMin = std::min(xMin, xMinTemp);
-        xMax = std::max(xMax, xMaxTemp);
-        yMin = std::min(yMin, yMinTemp);
-        yMax = std::max(yMax, yMaxTemp);
-        zMin = std::min(zMin, zMinTemp);
-        zMax = std::max(zMax, zMaxTemp);
+    for (Vertex &vertex : vertices) {
+        glm::vec3 position = vertex.getPosition();
+        xMin = std::min(xMin, position.x);
+        xMax = std::max(xMax, position.x);
+        yMin = std::min(yMin, position.y);
+        yMax = std::max(yMax, position.y);
+        zMin = std::min(zMin, position.z);
+        zMax = std::max(zMax, position.z);
     }
     glm::vec3 center((xMin + xMax) / 2, (yMin + yMax) / 2, (zMin + zMax) / 2);
-    for (Mesh &mesh : meshes)
-        mesh.recenter(center);
+    for (Vertex &vertex : vertices) {
+        glm::vec3 position = vertex.getPosition() - center;
+        vertex.setPosition(position);
+    }
 }
 
 Model::~Model() {}
 
-void Model::render(ZBuffer *zBuffer) {
-    for (Mesh &mesh : meshes)
-        mesh.render(zBuffer);
+QImage Model::render(ZBuffer *zBuffer) {
+    return zBuffer->render(vertices, indices);
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
-        meshes.push_back(processMesh(scene->mMeshes[node->mMeshes[i]]));
+        processMesh(scene->mMeshes[node->mMeshes[i]]);
     for (unsigned int i = 0; i < node->mNumChildren; i++)
         processNode(node->mChildren[i], scene);
 }
 
-Mesh Model::processMesh(aiMesh *mesh) {
-    std::vector<Vertex> vertices;
+void Model::processMesh(aiMesh *mesh) {
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         glm::vec3 position(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
         glm::vec3 normal(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         vertices.push_back(Vertex(position, normal));
     }
 
-    std::vector<unsigned int> indices;
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
         for (unsigned int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
             indices.push_back(mesh->mFaces[i].mIndices[j]);
-
-    return Mesh(vertices, indices);
 }

@@ -2,10 +2,13 @@
 #define SCANLINE_Z_BUFFER_H
 
 #include <algorithm>
+#include <cfloat>
+#include <cstring>
 #include <vector>
 #include <map>
 
-#include <stb/stb_image_write.h>
+#include <QImage>
+#include <QColor>
 
 #include "Vertex.h"
 #include "Polygon.h"
@@ -19,7 +22,7 @@ private:
 
 public:
     ScanlineZBuffer(int width, int height);
-    void render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
+    QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 
 #endif

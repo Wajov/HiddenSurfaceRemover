@@ -1,10 +1,8 @@
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-
 #include "ScanlineZBuffer.h"
 
 ScanlineZBuffer::ScanlineZBuffer(int width, int height) : ZBuffer(width, height) {}
 
-void ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) {
+QImage ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) {
     for (auto iter = indices.begin(); iter != indices.end(); ) {
         std::vector<Vertex> polygonVertices;
         for (int i = 0; i < 3; i++)
@@ -13,13 +11,10 @@ void ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsigned
     }
     std::sort(polygons.begin(), polygons.end());
 
-    float *zBuffer = new float[width];
-    unsigned char *output = new unsigned char[height * width * 3];
-    memset(output, 0, sizeof(unsigned char) * height * width * 3);
+    QImage ans(width, height, QImage::Format_RGB32);
     int index = 0;
-    for (int scanline = polygons.begin()->getY(); scanline < height; scanline++) {
-        for (int i = 0; i < width; i++)
-            zBuffer[i] = FLT_MAX;
+    for (int scanline = polygons.begin()->getY(); scanline <= polygons.rbegin()->getY() + polygons.rbegin()->getDeltaY() && scanline < height; scanline++) {
+        std::vector<float> zBuffer(width, FLT_MAX);
         for (; index < polygons.size() && polygons[index].getY() == scanline; index++)
             activePolygons.insert(std::make_pair(polygons[index].getY() + polygons[index].getDeltaY(), ActivePolygon(polygons[index])));
         if (scanline >= 0)
@@ -32,9 +27,9 @@ void ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsigned
                 for (int i = minX; i <= maxX && i < width; i++) {
                     if (i >= 0 && z < zBuffer[i]) {
                         zBuffer[i] = z;
-                        glm::vec3 color = calculateColor(p, n);
-                        for (int j = 0; j < 3; j++)
-                            output[(scanline * width + i) * 3 + j] = (unsigned char)(color[j] * 255);
+                        glm::vec3 colorTemp = calculateColor(p, n);
+                        QColor color((int)(colorTemp.x * 255), (int)(colorTemp.y * 255), (int)(colorTemp.z * 255));
+                        ans.setPixel(i, scanline, color.rgb());
                     }
                     z += dz;
                     p += dp;
@@ -47,7 +42,5 @@ void ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsigned
             pair.second.update();
     }
 
-    stbi_write_png("output.jpg", width, height, 3, output, 0);
-    delete[] zBuffer;
-    delete[] output;
+    return ans;
 }

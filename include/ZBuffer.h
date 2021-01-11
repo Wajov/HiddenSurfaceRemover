@@ -5,6 +5,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include <QImage>
 
 #include "Vertex.h"
 
@@ -18,7 +19,7 @@ protected:
 
 public:
     ZBuffer(int width, int height);
-    virtual void render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) = 0;
+    virtual QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) = 0;
 };
 
 #endif
