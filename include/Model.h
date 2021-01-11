@@ -21,6 +21,7 @@ private:
     void processMesh(aiMesh *mesh);
 
 public:
+    Model();
     Model(const std::string &path);
     ~Model();
     QImage render(ZBuffer *zBuffer);

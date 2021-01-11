@@ -16,12 +16,9 @@
 #include "ZBuffer.h"
 
 class ScanlineZBuffer : public ZBuffer {
-private:
-    std::vector<Polygon> polygons;
-    std::multimap<int, ActivePolygon> activePolygons;
-
 public:
     ScanlineZBuffer(int width, int height);
+    ~ScanlineZBuffer();
     QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 
