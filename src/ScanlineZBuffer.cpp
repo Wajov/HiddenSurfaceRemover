@@ -12,12 +12,13 @@ QImage ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsign
     std::sort(polygons.begin(), polygons.end());
 
     QImage ans(width, height, QImage::Format_RGB32);
-    int index = 0;
-    for (int scanline = polygons.begin()->getY(); scanline <= polygons.rbegin()->getY() + polygons.rbegin()->getDeltaY() && scanline < height; scanline++) {
-        std::vector<float> zBuffer(width, FLT_MAX);
+    ans.fill(QColor(0, 0, 0));
+    for (int index = 0, scanline = polygons.begin()->getY(); scanline < height; ) {
         for (; index < polygons.size() && polygons[index].getY() == scanline; index++)
             activePolygons.insert(std::make_pair(polygons[index].getY() + polygons[index].getDeltaY(), ActivePolygon(polygons[index])));
-        if (scanline >= 0)
+
+        if (scanline >= 0) {
+            std::vector<float> zBuffer(width, FLT_MAX);
             for (std::pair<const int, ActivePolygon> &pair : activePolygons) {
                 pair.second.check(scanline);
                 int minX, maxX;
@@ -36,10 +37,17 @@ QImage ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsign
                     n += dn;
                 }
             }
+        }
+
         while (!activePolygons.empty() && activePolygons.begin()->first == scanline)
             activePolygons.erase(activePolygons.begin());
         for (std::pair<const int, ActivePolygon> &pair : activePolygons)
             pair.second.update();
+
+        if (activePolygons.empty())
+            scanline = index < polygons.size() ? polygons[index].getY() : height;
+        else
+            scanline++;
     }
 
     return ans;

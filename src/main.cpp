@@ -8,7 +8,7 @@
 const int WIDTH = 1920, HEIGHT = 1080;
 
 int main(int argc, char **argv) {
-    Model model("model/suzanne.obj");
+    Model model("model/bunny.obj");
 
     QApplication application(argc, argv);
     QLabel label;
