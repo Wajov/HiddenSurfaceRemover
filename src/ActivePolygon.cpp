@@ -42,6 +42,6 @@ void ActivePolygon::intersection(int &minX, int &maxX, float &z, float &dz, glm:
         p = left.getP();
         dp = (right.getP() - left.getP()) / deltaX;
         n = left.getN();
-        dn = (right.getP() - left.getP()) / deltaX;
+        dn = (right.getN() - left.getN()) / deltaX;
     }
 }
