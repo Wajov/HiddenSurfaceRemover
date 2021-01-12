@@ -1,5 +1,7 @@
 #include "ActiveEdge.h"
 
+ActiveEdge::ActiveEdge() {}
+
 ActiveEdge::ActiveEdge(Edge &edge) {
     x = edge.getX();
     deltaX = edge.getDeltaX();

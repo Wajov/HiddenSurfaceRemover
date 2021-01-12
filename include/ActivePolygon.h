@@ -2,6 +2,7 @@
 #define ACTIVE_POLYGON_H
 
 #include <algorithm>
+#include <climits>
 #include <vector>
 #include <map>
 
@@ -9,21 +10,21 @@
 
 #include "Polygon.h"
 #include "Edge.h"
+#include "Segment.h"
 #include "ActiveEdge.h"
 
 class ActivePolygon {
 private:
-    int index;
+    int index, leftY, rightY;
     std::vector<Edge> edges;
-    std::multimap<int, ActiveEdge> activeEdges;
+    ActiveEdge leftEdge, rightEdge;
 
 public:
     ActivePolygon(Polygon &polygon);
     ~ActivePolygon();
     void check(int scanline);
     void update();
-    void intersection(int &minX, int &maxX, float &z, float &dz, glm::vec3 &p, glm::vec3 &dp, glm::vec3 &n, glm::vec3 &dn);
+    Segment segment();
 };
-
 
 #endif

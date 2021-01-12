@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <cfloat>
-#include <cstring>
 #include <vector>
 #include <map>
 
@@ -13,6 +12,8 @@
 #include "Vertex.h"
 #include "Polygon.h"
 #include "ActivePolygon.h"
+#include "Segment.h"
+#include "ActiveSegment.h"
 #include "ZBuffer.h"
 
 class ScanlineZBuffer : public ZBuffer {

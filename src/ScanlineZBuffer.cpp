@@ -17,42 +17,41 @@ QImage ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsign
     std::multimap<int, ActivePolygon> activePolygons;
     QImage ans(width, height, QImage::Format_RGB32);
     ans.fill(QColor(0, 0, 0));
-    for (int index = 0, scanline = polygons.begin()->getY(); scanline < height; ) {
-        for (; index < polygons.size() && polygons[index].getY() == scanline; index++)
+    for (int index = 0, scanlineY = polygons.begin()->getY(); scanlineY < height; ) {
+        for (; index < polygons.size() && polygons[index].getY() == scanlineY; index++)
             activePolygons.insert(std::make_pair(polygons[index].getY() + polygons[index].getDeltaY(), ActivePolygon(polygons[index])));
         for (std::pair<const int, ActivePolygon> &pair : activePolygons)
-            pair.second.check(scanline);
+            pair.second.check(scanlineY);
 
-        if (scanline >= 0) {
+        if (scanlineY >= 0) {
             std::vector<float> zBuffer(width, FLT_MAX);
             for (std::pair<const int, ActivePolygon> &pair : activePolygons) {
-                int minX, maxX;
-                float z, dz;
-                glm::vec3 p, dp, n, dn;
-                pair.second.intersection(minX, maxX, z, dz, p, dp, n, dn);
-                for (int i = minX; i <= maxX && i < width; i++) {
-                    if (i >= 0 && z < zBuffer[i]) {
-                        zBuffer[i] = z;
+                Segment segment = pair.second.segment();
+                int x = segment.getX() + segment.getDeltaX();
+                ActiveSegment activeSegment(segment);
+
+                for (int scanlineX = segment.getX(); scanlineX <= x && scanlineX < width; scanlineX++) {
+                    if (scanlineX >= 0 && activeSegment.getZ() < zBuffer[scanlineX]) {
+                        zBuffer[scanlineX] = activeSegment.getZ();
+                        glm::vec3 p = activeSegment.getP(), n = activeSegment.getN();
                         glm::vec3 colorTemp = calculateColor(p, n);
                         QColor color((int)(colorTemp.x * 255), (int)(colorTemp.y * 255), (int)(colorTemp.z * 255));
-                        ans.setPixel(i, scanline, color.rgb());
+                        ans.setPixel(scanlineX, scanlineY, color.rgb());
                     }
-                    z += dz;
-                    p += dp;
-                    n += dn;
+                    activeSegment.update();
                 }
             }
         }
 
-        while (!activePolygons.empty() && activePolygons.begin()->first == scanline)
+        while (!activePolygons.empty() && activePolygons.begin()->first == scanlineY)
             activePolygons.erase(activePolygons.begin());
         for (std::pair<const int, ActivePolygon> &pair : activePolygons)
             pair.second.update();
 
         if (activePolygons.empty())
-            scanline = index < polygons.size() ? polygons[index].getY() : height;
+            scanlineY = index < polygons.size() ? polygons[index].getY() : height;
         else
-            scanline++;
+            scanlineY++;
     }
 
     return ans;

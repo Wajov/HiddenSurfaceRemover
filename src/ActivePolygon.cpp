@@ -4,44 +4,54 @@ ActivePolygon::ActivePolygon(Polygon &polygon) {
     edges = polygon.getEdges();
     std::sort(edges.begin(), edges.end());
     index = 0;
-    for (int i = 0; i < 2; i++, index++)
-        activeEdges.insert(std::make_pair(edges[index].getY() + edges[index].getDeltaY(), ActiveEdge(edges[index])));
+    leftY = edges[index].getY() + edges[index].getDeltaY();
+    leftEdge = ActiveEdge(edges[index++]);
+    rightY = edges[index].getY() + edges[index].getDeltaY();
+    rightEdge = ActiveEdge(edges[index++]);
 }
 
 ActivePolygon::~ActivePolygon() {}
 
 void ActivePolygon::check(int scanline) {
-    while (!activeEdges.empty() && activeEdges.begin()->first == scanline) {
-        activeEdges.erase(activeEdges.begin());
-        if (index < edges.size()) {
-            activeEdges.insert(std::make_pair(edges[index].getY() + edges[index].getDeltaY(), ActiveEdge(edges[index])));
-            index++;
+    while (leftY == scanline || rightY == scanline) {
+        if (leftY == scanline) {
+            if (index < edges.size()) {
+                leftY = edges[index].getY() + edges[index].getDeltaY();
+                leftEdge = ActiveEdge(edges[index++]);
+            } else
+                leftY = INT_MIN;
         }
+        if (rightY == scanline) {
+            if (index < edges.size()) {
+                rightY = edges[index].getY() + edges[index].getDeltaY();
+                rightEdge = ActiveEdge(edges[index++]);
+            } else
+                rightY = INT_MIN;
+        }
+    }
+
+    if (leftEdge.getX() > rightEdge.getX()) {
+        std::swap(leftY, rightY);
+        std::swap(leftEdge, rightEdge);
     }
 }
 
 void ActivePolygon::update() {
-    for (std::pair<const int, ActiveEdge> &pair : activeEdges)
-        pair.second.update();
+    leftEdge.update();
+    rightEdge.update();
 }
 
-void ActivePolygon::intersection(int &minX, int &maxX, float &z, float &dz, glm::vec3 &p, glm::vec3 &dp, glm::vec3 &n, glm::vec3 &dn) {
-    if (activeEdges.size() < 2) {
-        minX = 0;
-        maxX = -1;
+Segment ActivePolygon::segment() {
+    if (leftY != INT_MAX && rightY != INT_MAX) {
+        int deltaX = rightEdge.getX() - leftEdge.getX();
+        float dz = (rightEdge.getZ() - leftEdge.getZ()) / deltaX;
+        glm::vec3 p = leftEdge.getP();
+        glm::vec3 dp = (rightEdge.getP() - leftEdge.getP()) / (float)deltaX;
+        glm::vec3 n = leftEdge.getN();
+        glm::vec3 dn = (rightEdge.getN() - leftEdge.getN()) / (float)deltaX;
+        return Segment(leftEdge.getX(), deltaX, leftEdge.getZ(), dz, p, dp, n, dn);
     } else {
-        ActiveEdge left = activeEdges.begin()->second;
-        ActiveEdge right = activeEdges.rbegin()->second;
-        if (left.getX() > right.getX())
-            std::swap(left, right);
-        minX = left.getX();
-        maxX = right.getX();
-        float deltaX = maxX - minX;
-        z = left.getZ();
-        dz = (right.getZ() - left.getZ()) / deltaX;
-        p = left.getP();
-        dp = (right.getP() - left.getP()) / deltaX;
-        n = left.getN();
-        dn = (right.getN() - left.getN()) / deltaX;
+        glm::vec3 zero(0.0f);
+        return Segment(0, -1, 0, 0, zero, zero, zero, zero);
     }
 }
