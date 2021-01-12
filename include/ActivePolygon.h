@@ -2,6 +2,7 @@
 #define ACTIVE_POLYGON_H
 
 #include <algorithm>
+#include <vector>
 #include <map>
 
 #include <glm/glm.hpp>

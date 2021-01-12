@@ -10,7 +10,6 @@ private:
     glm::vec3 p, dp, n, dn;
 
 public:
-    ActiveEdge();
     ActiveEdge(Edge &edge);
     ~ActiveEdge();
     int getX();

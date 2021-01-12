@@ -10,7 +10,9 @@ Renderer::Renderer(const std::string &path, int width, int height) : QLabel() {
     calculateImage();
 }
 
-Renderer::~Renderer() {}
+Renderer::~Renderer() {
+    delete zBuffer;
+}
 
 void Renderer::calculateImage() {
     setPixmap(QPixmap::fromImage(model.render(zBuffer)));
@@ -26,7 +28,7 @@ void Renderer::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void Renderer::mouseMoveEvent(QMouseEvent *event) {
-    if (press && lastX != INT_MIN && lastY != INT_MIN) {
+    if (press && lastX != INT_MIN && lastY != INT_MIN && (event->x() != lastX || event->y() != lastY)) {
         glm::vec3 a = glm::normalize(glm::vec3((float)lastX / width - 0.5f, 0.5f - (float)lastY / height, 1.0f));
         glm::vec3 b = glm::normalize(glm::vec3((float)event->x() / width - 0.5f, 0.5f - (float)event->y() / height, 1.0f));
         glm::vec3 axis = glm::cross(a, b);
