@@ -12,7 +12,7 @@
 class Polygon {
 private:
     int x, deltaX, y, deltaY;
-    float z;
+    float z, deltaZ;
     std::vector<Edge> edges;
 
 public:
@@ -24,6 +24,7 @@ public:
     int getY();
     int getDeltaY();
     float getZ();
+    float getDeltaZ();
     std::vector<Edge> getEdges();
 };
 

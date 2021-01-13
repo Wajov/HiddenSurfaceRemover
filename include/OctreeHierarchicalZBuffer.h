@@ -1,6 +1,8 @@
 #ifndef OCTREE_HIERARCHICAL_Z_BUFFER_H
 #define OCTREE_HIERARCHICAL_Z_BUFFER_H
 
+#include <algorithm>
+#include <cfloat>
 #include <vector>
 
 #include <QImage>
@@ -8,6 +10,8 @@
 
 #include "Vertex.h"
 #include "ZBuffer.h"
+#include "QuadTree.h"
+#include "Octree.h"
 #include "Polygon.h"
 
 class OctreeHierarchicalZBuffer : public ZBuffer{

@@ -12,18 +12,17 @@
 
 #include "ZBuffer.h"
 #include "Polygon.h"
-#include "ActivePolygon.h"
-#include "Segment.h"
-#include "ActiveSegment.h"
+#include "Octree.h"
 #include "Pixel.h"
 
 class QuadTree {
 private:
     int minX, maxX, minY, maxY;
-    float maxZ;
+    float z;
     std::vector<QuadTree *> children;
-    bool contain(Polygon &polygon);
     bool contain(Pixel &pixel);
+    bool contain(Polygon &polygon);
+    bool contain(Octree *octree);
     void update();
     void addPixels(std::vector<Pixel> &pixels, QImage &image);
 
@@ -31,6 +30,7 @@ public:
     QuadTree(int minX, int maxX, int minY, int maxY);
     ~QuadTree();
     void addPolygon(Polygon &polygon, QImage &image, ZBuffer *zBuffer);
+    void addOctree(Octree *octree, QImage &image, ZBuffer *zBuffer);
 };
 
 #endif

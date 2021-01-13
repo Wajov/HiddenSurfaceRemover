@@ -5,7 +5,7 @@ QuadTree::QuadTree(int minX, int maxX, int minY, int maxY) {
     this->maxX = maxX;
     this->minY = minY;
     this->maxY = maxY;
-    maxZ = FLT_MAX;
+    z = FLT_MAX;
     if (minX != maxX || minY != maxY) {
         int middleX = (minX + maxX) / 2, middleY = (minY + maxY) / 2;
         children.push_back(new QuadTree(minX, middleX, minY, middleY));
@@ -23,31 +23,35 @@ QuadTree::~QuadTree() {
         delete child;
 }
 
-bool QuadTree::contain(Polygon &polygon) {
-    return minX <= polygon.getX() && maxX >= polygon.getX() + polygon.getDeltaX() && minY <= polygon.getY() && maxY >= polygon.getY() + polygon.getDeltaY();
-}
-
 bool QuadTree::contain(Pixel &pixel) {
     return minX <= pixel.getX() && maxX >= pixel.getX() && minY <= pixel.getY() && maxY >= pixel.getY();
 }
 
+bool QuadTree::contain(Polygon &polygon) {
+    return minX <= polygon.getX() && maxX >= polygon.getX() + polygon.getDeltaX() && minY <= polygon.getY() && maxY >= polygon.getY() + polygon.getDeltaY();
+}
+
+bool QuadTree::contain(Octree *octree) {
+    return minX <= octree->getMinX() && maxX >= octree->getMaxX() && minY <= octree->getMinY() && maxY >= octree->getMaxY();
+}
+
 void QuadTree::update() {
-    maxZ = -FLT_MAX;
+    z = -FLT_MAX;
     for (QuadTree *child : children)
-        maxZ = std::max(maxZ, child->maxZ);
+        z = std::max(z, child->z);
 }
 
 void QuadTree::addPixels(std::vector<Pixel> &pixels, QImage &image) {
     float minZ = FLT_MAX;
     for (Pixel &pixel : pixels)
         minZ = std::min(minZ, pixel.getZ());
-    if (maxZ <= minZ)
+    if (z <= minZ)
         return;
 
     if (minX == maxX && minY == maxY) {
         for (Pixel &pixel : pixels)
-            if (pixel.getZ() < maxZ) {
-                maxZ = pixel.getZ();
+            if (pixel.getZ() < z) {
+                z = pixel.getZ();
                 image.setPixel(pixel.getX(), pixel.getY(), pixel.getColor().rgb());
             }
     } else {
@@ -66,7 +70,7 @@ void QuadTree::addPixels(std::vector<Pixel> &pixels, QImage &image) {
 }
 
 void QuadTree::addPolygon(Polygon &polygon, QImage &image, ZBuffer *zBuffer) {
-    if (maxZ <= polygon.getZ())
+    if (z <= polygon.getZ())
         return;
 
     bool flag = true;
@@ -79,28 +83,25 @@ void QuadTree::addPolygon(Polygon &polygon, QImage &image, ZBuffer *zBuffer) {
         }
 
     if (flag) {
-        std::vector<Pixel> pixels;
-        ActivePolygon activePolygon(polygon);
-        for (int scanlineY = polygon.getY(); scanlineY <= polygon.getY() + polygon.getDeltaY() && scanlineY <= maxY; scanlineY++) {
-            activePolygon.check(scanlineY);
-
-            if (scanlineY >= minY) {
-                Segment segment = activePolygon.segment();
-                ActiveSegment activeSegment(segment);
-
-                for (int scanlineX = segment.getX(); scanlineX <= segment.getX() + segment.getDeltaX() && scanlineX <= maxX; scanlineX++) {
-                    if (scanlineX >= minX) {
-                        float z = activeSegment.getZ();
-                        glm::vec3 p = activeSegment.getP(), n = activeSegment.getN();
-                        glm::vec3 colorTemp = zBuffer->calculateColor(p, n);
-                        QColor color((int)(colorTemp.x * 255), (int)(colorTemp.y * 255), (int)(colorTemp.z * 255));
-                        pixels.push_back(Pixel(scanlineX, scanlineY, z, color));
-                    }
-                    activeSegment.update();
-                }
-            }
-            activePolygon.update();
-        }
+        std::vector<Pixel> pixels = zBuffer->calculatePixels(polygon, minX, maxX, minY, maxY);
         addPixels(pixels, image);
     }
+}
+
+void QuadTree::addOctree(Octree *octree, QImage &image, ZBuffer *zBuffer) {
+    if (z <= octree->getZ())
+        return;
+
+    std::vector<Polygon> polygons = octree->getPolygons();
+    for (Polygon &polygon : polygons) {
+        std::vector<Pixel> pixels = zBuffer->calculatePixels(polygon, minX, maxX, minY, maxY);
+        addPixels(pixels, image);
+    }
+
+    std::vector<Octree *> octreeChildren = octree->getChildren();
+    for (Octree *octreeChild : octreeChildren)
+        for (QuadTree *child : children)
+            if (child->contain(octreeChild))
+                child->addOctree(octreeChild, image, zBuffer);
+    update();
 }

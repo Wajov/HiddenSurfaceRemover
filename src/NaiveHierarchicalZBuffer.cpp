@@ -13,7 +13,7 @@ QImage NaiveHierarchicalZBuffer::render(std::vector <Vertex> &vertices, std::vec
         for (int i = 0; i < 3; i++)
             polygonVertices.push_back(vertices[*(iter++)]);
         Polygon polygon(polygonVertices, MVP, width, height);
-        if (polygon.getDeltaY() > 0)
+        if (polygon.getDeltaX() > 0 && polygon.getDeltaY() > 0)
             root->addPolygon(polygon, ans, this);
     }
     delete root;

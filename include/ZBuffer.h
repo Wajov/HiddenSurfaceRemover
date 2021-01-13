@@ -8,6 +8,11 @@
 #include <QImage>
 
 #include "Vertex.h"
+#include "Pixel.h"
+#include "Polygon.h"
+#include "ActivePolygon.h"
+#include "Segment.h"
+#include "ActiveSegment.h"
 
 class ZBuffer {
 protected:
@@ -16,6 +21,7 @@ protected:
     glm::vec3 ambientColor, diffuseColor, specularColor, cameraPosition, lightPosition;
     glm::mat4 rotate, MVP;
     void calculateMVP();
+    glm::vec3 calculateColor(glm::vec3 &p, glm::vec3 &n);
 
 public:
     ZBuffer(int width, int height);
@@ -24,7 +30,7 @@ public:
     void setFactor(float factor);
     glm::mat4 getRotate();
     void setRotate(glm::mat4 &rotate);
-    glm::vec3 calculateColor(glm::vec3 &p, glm::vec3 &n);
+    std::vector<Pixel> calculatePixels(Polygon &polygon, int minX, int maxX, int minY, int maxY);
     virtual QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) = 0;
 };
 

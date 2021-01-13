@@ -12,6 +12,7 @@
 
 #include "Model.h"
 #include "ZBuffer.h"
+#include "NaiveZBuffer.h"
 #include "ScanlineZBuffer.h"
 #include "NaiveHierarchicalZBuffer.h"
 #include "OctreeHierarchicalZBuffer.h"

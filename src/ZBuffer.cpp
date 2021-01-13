@@ -58,3 +58,29 @@ void ZBuffer::setRotate(glm::mat4 &rotate) {
     this->rotate = rotate;
     calculateMVP();
 }
+
+std::vector<Pixel> ZBuffer::calculatePixels(Polygon &polygon, int minX, int maxX, int minY, int maxY) {
+    std::vector<Pixel> ans;
+    ActivePolygon activePolygon(polygon);
+    for (int scanlineY = polygon.getY(); scanlineY <= polygon.getY() + polygon.getDeltaY() && scanlineY <= maxY; scanlineY++) {
+        activePolygon.check(scanlineY);
+
+        if (scanlineY >= minY) {
+            Segment segment = activePolygon.segment();
+            ActiveSegment activeSegment(segment);
+
+            for (int scanlineX = segment.getX(); scanlineX <= segment.getX() + segment.getDeltaX() && scanlineX <= maxX; scanlineX++) {
+                if (scanlineX >= minX) {
+                    float z = activeSegment.getZ();
+                    glm::vec3 p = activeSegment.getP(), n = activeSegment.getN();
+                    glm::vec3 colorTemp = calculateColor(p, n);
+                    QColor color((int)(colorTemp.x * 255), (int)(colorTemp.y * 255), (int)(colorTemp.z * 255));
+                    ans.push_back(Pixel(scanlineX, scanlineY, z, color));
+                }
+                activeSegment.update();
+            }
+        }
+        activePolygon.update();
+    }
+    return ans;
+}
