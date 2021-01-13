@@ -8,13 +8,10 @@
 
 #include "Vertex.h"
 #include "ZBuffer.h"
-#include "QuadTreeNode.h"
+#include "QuadTree.h"
+#include "Polygon.h"
 
 class NaiveHierarchicalZBuffer : public ZBuffer {
-private:
-    QuadTreeNode *root;
-    QuadTreeNode *buildQuadTree(int minX, int maxX, int minY, int maxY);
-
 public:
     NaiveHierarchicalZBuffer(int width, int height);
     ~NaiveHierarchicalZBuffer();

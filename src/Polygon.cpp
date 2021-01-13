@@ -6,11 +6,19 @@ Polygon::Polygon(std::vector<Vertex> &vertices, glm::mat4 MVP, int width, int he
     }
     edges.push_back(Edge(*vertices.rbegin(), *vertices.begin(), MVP, width, height));
 
-    int minY = INT_MAX, maxY = INT_MIN;
+    int minX, maxX, minY, maxY;
+    minX = minY = INT_MAX;
+    maxX = maxY = INT_MIN;
+    z = FLT_MAX;
     for (Edge &edge : edges) {
         minY = std::min(minY, edge.getY());
         maxY = std::max(maxY, edge.getY() + edge.getDeltaY());
+        minX = std::min(minX, std::min(edge.getX(), edge.getX() + edge.getDeltaX()));
+        maxX = std::max(maxX, std::max(edge.getX(), edge.getX() + edge.getDeltaX()));
+        z = std::min(z, std::min(edge.getZ(), edge.getZ() + edge.getDz() * edge.getDeltaY()));
     }
+    x = minX;
+    deltaX = maxX - minX;
     y = minY;
     deltaY = maxY - minY;
 }
@@ -24,8 +32,12 @@ bool Polygon::operator <(Polygon &polygon) {
         return y + deltaY < polygon.y + polygon.deltaY;
 }
 
-std::vector<Edge> Polygon::getEdges() {
-    return edges;
+int Polygon::getX() {
+    return x;
+}
+
+int Polygon::getDeltaX() {
+    return deltaX;
 }
 
 int Polygon::getY() {
@@ -34,4 +46,12 @@ int Polygon::getY() {
 
 int Polygon::getDeltaY() {
     return deltaY;
+}
+
+float Polygon::getZ() {
+    return z;
+}
+
+std::vector<Edge> Polygon::getEdges() {
+    return edges;
 }

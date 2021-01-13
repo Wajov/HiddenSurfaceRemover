@@ -4,14 +4,18 @@ NaiveHierarchicalZBuffer::NaiveHierarchicalZBuffer(int width, int height) : ZBuf
 
 NaiveHierarchicalZBuffer::~NaiveHierarchicalZBuffer() {}
 
-QuadTreeNode *NaiveHierarchicalZBuffer::buildQuadTree(int minX, int maxX, int minY, int maxY) {
-    if (minX == maxX && minY == maxY)
-        return new QuadTreeNode(minX, minY);
-    std::vector<QuadTreeNode *> children;
-    int middleX = (minX + maxX) / 2, middleY = (minY + maxY) / 2;
-    
-}
-
 QImage NaiveHierarchicalZBuffer::render(std::vector <Vertex> &vertices, std::vector<unsigned int> &indices) {
-    root = buildQuadTree(0, width - 1, 0, height - 1);
+    QuadTree *root = new QuadTree(0, width - 1, 0, height - 1);
+    QImage ans(width, height, QImage::Format_RGB32);
+    ans.fill(QColor(0, 0, 0));
+    for (auto iter = indices.begin(); iter != indices.end(); ) {
+        std::vector<Vertex> polygonVertices;
+        for (int i = 0; i < 3; i++)
+            polygonVertices.push_back(vertices[*(iter++)]);
+        Polygon polygon(polygonVertices, MVP, width, height);
+        root->addPolygon(polygon, ans, this);
+    }
+    delete root;
+
+    return ans;
 }

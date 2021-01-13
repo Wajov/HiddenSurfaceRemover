@@ -11,16 +11,20 @@
 
 class Polygon {
 private:
+    int x, deltaX, y, deltaY;
+    float z;
     std::vector<Edge> edges;
-    int y, deltaY;
 
 public:
     Polygon(std::vector<Vertex> &vertices, glm::mat4 MVP, int width, int height);
     ~Polygon();
     bool operator <(Polygon &polygon);
-    std::vector<Edge> getEdges();
+    int getX();
+    int getDeltaX();
     int getY();
     int getDeltaY();
+    float getZ();
+    std::vector<Edge> getEdges();
 };
 
 #endif
