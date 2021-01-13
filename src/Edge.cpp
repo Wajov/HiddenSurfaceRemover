@@ -1,5 +1,5 @@
 #include "Edge.h"
-#include <iostream>
+
 Edge::Edge(Vertex &source, Vertex &target, glm::mat4 MVP, int width, int height) {
     Vertex s = source, t = target;
     glm::vec4 p1 = MVP * glm::vec4(s.getPosition(), 1.0f), p2 = MVP * glm::vec4(t.getPosition(), 1.0f);

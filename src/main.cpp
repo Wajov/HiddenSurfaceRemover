@@ -2,11 +2,11 @@
 
 #include "Renderer.h"
 
-const int WIDTH = 1920, HEIGHT = 1080;
+const int WIDTH = 1024, HEIGHT = 768;
 
 int main(int argc, char **argv) {
     QApplication application(argc, argv);
-    Renderer renderer("model/suzanne.obj", WIDTH, HEIGHT);
+    Renderer renderer("model/bunny.obj", WIDTH, HEIGHT);
     renderer.show();
 
     return QApplication::exec();

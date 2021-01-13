@@ -1,5 +1,5 @@
-#ifndef IMAGE_WIDGET_H
-#define IMAGE_WIDGET_H
+#ifndef RENDERER_H
+#define RENDERER_H
 
 #include <climits>
 #include <string>
@@ -13,6 +13,8 @@
 #include "Model.h"
 #include "ZBuffer.h"
 #include "ScanlineZBuffer.h"
+#include "NaiveHierarchicalZBuffer.h"
+#include "OctreeHierarchicalZBuffer.h"
 
 class Renderer : public QLabel {
 private:

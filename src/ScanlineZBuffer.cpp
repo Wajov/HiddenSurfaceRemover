@@ -10,7 +10,9 @@ QImage ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsign
         std::vector<Vertex> polygonVertices;
         for (int i = 0; i < 3; i++)
             polygonVertices.push_back(vertices[*(iter++)]);
-        polygons.push_back(Polygon(polygonVertices, MVP, width, height));
+        Polygon polygon(polygonVertices, MVP, width, height);
+        if (polygon.getDeltaY() > 0)
+            polygons.push_back(polygon);
     }
     std::sort(polygons.begin(), polygons.end());
 

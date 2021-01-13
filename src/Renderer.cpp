@@ -5,7 +5,9 @@ Renderer::Renderer(const std::string &path, int width, int height) : QLabel() {
     this->width = width;
     this->height = height;
     model = Model(path);
-    zBuffer = new ScanlineZBuffer(width, height);
+//    zBuffer = new ScanlineZBuffer(width, height);
+//    zBuffer = new NaiveHierarchicalZBuffer(width, height);
+    zBuffer = new OctreeHierarchicalZBuffer(width, height);
     resize(width, height);
     calculateImage();
 }
