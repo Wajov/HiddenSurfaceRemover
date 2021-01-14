@@ -1,12 +1,12 @@
 #include <QApplication>
 
-#include "Renderer.h"
+#include "RenderWidget.h"
 
-const int WIDTH = 1024, HEIGHT = 768;
+const int WIDTH = 1600, HEIGHT = 900;
 
 int main(int argc, char **argv) {
     QApplication application(argc, argv);
-    Renderer renderer("model/bunny.obj", WIDTH, HEIGHT);
+    RenderWidget renderer(WIDTH, HEIGHT);
     renderer.show();
 
     return QApplication::exec();

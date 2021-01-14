@@ -25,7 +25,7 @@ protected:
 
 public:
     ZBuffer(int width, int height);
-    ~ZBuffer();
+    virtual ~ZBuffer();
     float getFactor();
     void setFactor(float factor);
     glm::mat4 getRotate();

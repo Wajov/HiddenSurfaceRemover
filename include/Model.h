@@ -24,6 +24,8 @@ public:
     Model();
     Model(const std::string &path);
     ~Model();
+    int numberOfVertices();
+    int numberOfFacets();
     QImage render(ZBuffer *zBuffer);
 };
 

@@ -34,10 +34,6 @@ Model::Model(const std::string &path) {
 
 Model::~Model() {}
 
-QImage Model::render(ZBuffer *zBuffer) {
-    return zBuffer->render(vertices, indices);
-}
-
 void Model::processNode(aiNode *node, const aiScene *scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
         processMesh(scene->mMeshes[node->mMeshes[i]]);
@@ -55,4 +51,16 @@ void Model::processMesh(aiMesh *mesh) {
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
         for (unsigned int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
             indices.push_back(mesh->mFaces[i].mIndices[j]);
+}
+
+int Model::numberOfVertices() {
+    return vertices.size();
+}
+
+int Model::numberOfFacets() {
+    return indices.size() / 3;
+}
+
+QImage Model::render(ZBuffer *zBuffer) {
+    return zBuffer->render(vertices, indices);
 }

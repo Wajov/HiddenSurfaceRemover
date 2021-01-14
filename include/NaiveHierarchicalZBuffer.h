@@ -14,7 +14,7 @@
 class NaiveHierarchicalZBuffer : public ZBuffer {
 public:
     NaiveHierarchicalZBuffer(int width, int height);
-    ~NaiveHierarchicalZBuffer();
+    ~NaiveHierarchicalZBuffer() override;
     QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 

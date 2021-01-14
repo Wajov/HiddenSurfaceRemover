@@ -17,7 +17,7 @@
 class OctreeHierarchicalZBuffer : public ZBuffer{
 public:
     OctreeHierarchicalZBuffer(int width, int height);
-    ~OctreeHierarchicalZBuffer();
+    ~OctreeHierarchicalZBuffer() override;
     QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 

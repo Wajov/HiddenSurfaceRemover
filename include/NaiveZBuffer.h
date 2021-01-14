@@ -11,7 +11,7 @@
 class NaiveZBuffer : public ZBuffer {
 public:
     NaiveZBuffer(int width, int height);
-    ~NaiveZBuffer();
+    ~NaiveZBuffer() override;
     QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 

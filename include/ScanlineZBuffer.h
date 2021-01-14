@@ -19,7 +19,7 @@
 class ScanlineZBuffer : public ZBuffer {
 public:
     ScanlineZBuffer(int width, int height);
-    ~ScanlineZBuffer();
+    ~ScanlineZBuffer() override;
     QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) override;
 };
 
