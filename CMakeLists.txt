@@ -4,7 +4,6 @@ project(HiddenSurfaceRemover)
 set(CMAKE_AUTOMOC ON)
 
 include_directories(include)
-aux_source_directory(src SOURCE)
 set(HEADER
         include/ActiveEdge.h
         include/ActivePolygon.h
@@ -24,7 +23,8 @@ set(HEADER
         include/Segment.h
         include/Vertex.h
         include/ZBuffer.h
-)
+        )
+aux_source_directory(src SOURCE)
 add_executable(HiddenSurfaceRemover
         ${HEADER}
         ${SOURCE}

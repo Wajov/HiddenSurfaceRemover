@@ -15,7 +15,7 @@ private:
 
 public:
     ImageLabel();
-    ~ImageLabel();
+    ~ImageLabel() override;
 
 signals:
     void mousePressed();
