@@ -71,11 +71,8 @@ void RenderWidget::calculateImage() {
 }
 
 void RenderWidget::selectModel() {
-    QFileDialog fileDialog(this);
-    if (fileDialog.exec()) {
-        QStringList files = fileDialog.selectedFiles();
-        model = Model(files[0].toStdString());
-    }
+    QString path = QFileDialog::getOpenFileName(this,"Select Model",".","");
+    model = Model(path.toStdString());
     calculateImage();
 }
 
