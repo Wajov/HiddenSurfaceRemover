@@ -15,12 +15,6 @@ ZBuffer::ZBuffer(int width, int height) {
 
 ZBuffer::~ZBuffer() {}
 
-float ZBuffer::clamp(float x, float min, float max) {
-    x = std::max(x, min);
-    x = std::min(x, max);
-    return x;
-}
-
 void ZBuffer::calculateMVP() {
     QMatrix4x4 model, view, projection;
     model = rotate;
@@ -40,15 +34,15 @@ QColor ZBuffer::calculateColor(QVector3D &p, QVector3D &n) {
 
     QVector3D N = QVector3D(model * QVector4D(n, 0.0f)).normalized();
     QVector3D L = (lightPosition - vertexPosition).normalized();
-    QVector3D diffuse = diffuseColor * lightPower * clamp(QVector3D::dotProduct(N, L), 0.0f, 1.0f) / (distance * distance);
+    QVector3D diffuse = diffuseColor * lightPower * std::max(QVector3D::dotProduct(N, L), 0.0f) / (distance * distance);
 
     QVector3D V = (cameraPosition - vertexPosition).normalized();
     QVector3D H = (L + V).normalized();
-    QVector3D specular = specularColor * lightPower * std::pow(clamp(QVector3D::dotProduct(N, H), 0.0f, 1.0f), 5) / (distance * distance);
+    QVector3D specular = specularColor * lightPower * std::pow(std::max(QVector3D::dotProduct(N, H), 0.0f), 5) / (distance * distance);
 
     QVector3D color = ambient + diffuse + specular;
     for (int i = 0; i < 3; i++)
-        color[i] = clamp(color[i], 0.0f, 1.0f);
+        color[i] = std::min(std::max(color[i], 0.0f), 1.0f);
 
     return QColor((int)(color.x() * 255), (int)(color.y() * 255), (int)(color.z() * 255));
 }

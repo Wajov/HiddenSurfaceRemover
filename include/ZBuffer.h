@@ -24,7 +24,6 @@ protected:
     float factor, lightPower;
     QVector3D ambientColor, diffuseColor, specularColor, cameraPosition, lightPosition;
     QMatrix4x4 rotate, MVP;
-    float clamp(float x, float min, float max);
     void calculateMVP();
     QColor calculateColor(QVector3D &p, QVector3D &n);
 
