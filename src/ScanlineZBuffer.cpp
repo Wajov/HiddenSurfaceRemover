@@ -35,9 +35,8 @@ QImage ScanlineZBuffer::render(std::vector<Vertex> &vertices, std::vector<unsign
                 for (int scanlineX = segment.getX(); scanlineX <= x && scanlineX < width; scanlineX++) {
                     if (scanlineX >= 0 && activeSegment.getZ() < zBuffer[scanlineX]) {
                         zBuffer[scanlineX] = activeSegment.getZ();
-                        glm::vec3 p = activeSegment.getP(), n = activeSegment.getN();
-                        glm::vec3 colorTemp = calculateColor(p, n);
-                        QColor color((int)(colorTemp.x * 255), (int)(colorTemp.y * 255), (int)(colorTemp.z * 255));
+                        QVector3D p = activeSegment.getP(), n = activeSegment.getN();
+                        QColor color = calculateColor(p, n);
                         ans.setPixel(scanlineX, scanlineY, color.rgb());
                     }
                     activeSegment.update();

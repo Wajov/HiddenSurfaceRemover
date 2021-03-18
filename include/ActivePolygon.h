@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 
-#include <glm/glm.hpp>
+#include <QVector3D>
 
 #include "Polygon.h"
 #include "Edge.h"

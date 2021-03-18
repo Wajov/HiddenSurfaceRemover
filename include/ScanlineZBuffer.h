@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 
+#include <QVector3D>
 #include <QImage>
 #include <QColor>
 

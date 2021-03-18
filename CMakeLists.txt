@@ -33,9 +33,6 @@ add_executable(HiddenSurfaceRemover
 # Assimp
 find_package(assimp REQUIRED)
 
-# glm
-find_package(glm REQUIRED)
-
 # Qt
 set(QT_VERSION 5)
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)

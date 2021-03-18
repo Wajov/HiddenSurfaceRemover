@@ -1,10 +1,14 @@
 #ifndef Z_BUFFER_H
 #define Z_BUFFER_H
 
+#include <cmath>
+#include <algorithm>
 #include <vector>
 
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
+#include <QVector3D>
+#include <QVector4D>
+#include <QMatrix4x4>
+#include <QColor>
 #include <QImage>
 
 #include "Vertex.h"
@@ -18,18 +22,19 @@ class ZBuffer {
 protected:
     int width, height;
     float factor, lightPower;
-    glm::vec3 ambientColor, diffuseColor, specularColor, cameraPosition, lightPosition;
-    glm::mat4 rotate, MVP;
+    QVector3D ambientColor, diffuseColor, specularColor, cameraPosition, lightPosition;
+    QMatrix4x4 rotate, MVP;
+    float clamp(float x, float min, float max);
     void calculateMVP();
-    glm::vec3 calculateColor(glm::vec3 &p, glm::vec3 &n);
+    QColor calculateColor(QVector3D &p, QVector3D &n);
 
 public:
     ZBuffer(int width, int height);
     virtual ~ZBuffer();
     float getFactor();
     void setFactor(float factor);
-    glm::mat4 getRotate();
-    void setRotate(glm::mat4 &rotate);
+    QMatrix4x4 getRotate();
+    void setRotate(QMatrix4x4 &rotate);
     std::vector<Pixel> calculatePixels(Polygon &polygon, int minX, int maxX, int minY, int maxY);
     virtual QImage render(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices) = 0;
 };

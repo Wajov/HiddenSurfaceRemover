@@ -41,9 +41,9 @@ void ActivePolygon::update() {
 Segment ActivePolygon::segment() {
     int deltaX = rightEdge.getX() - leftEdge.getX();
     float dz = (rightEdge.getZ() - leftEdge.getZ()) / deltaX;
-    glm::vec3 p = leftEdge.getP();
-    glm::vec3 dp = (rightEdge.getP() - leftEdge.getP()) / (float)deltaX;
-    glm::vec3 n = leftEdge.getN();
-    glm::vec3 dn = (rightEdge.getN() - leftEdge.getN()) / (float)deltaX;
+    QVector3D p = leftEdge.getP();
+    QVector3D dp = (rightEdge.getP() - leftEdge.getP()) / (float)deltaX;
+    QVector3D n = leftEdge.getN();
+    QVector3D dn = (rightEdge.getN() - leftEdge.getN()) / (float)deltaX;
     return Segment(leftEdge.getX(), deltaX, leftEdge.getZ(), dz, p, dp, n, dn);
 }

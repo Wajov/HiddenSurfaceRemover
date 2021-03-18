@@ -25,11 +25,11 @@ float ActiveEdge::getZ() {
     return z;
 }
 
-glm::vec3 ActiveEdge::getP() {
+QVector3D ActiveEdge::getP() {
     return p;
 }
 
-glm::vec3 ActiveEdge::getN() {
+QVector3D ActiveEdge::getN() {
     return n;
 }
 

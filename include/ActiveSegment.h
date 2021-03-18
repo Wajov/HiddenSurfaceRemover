@@ -1,22 +1,22 @@
 #ifndef ACTIVE_SEGMENT_H
 #define ACTIVE_SEGMENT_H
 
-#include <glm/glm.hpp>
+#include <QVector3D>
 
 #include "Segment.h"
 
 class ActiveSegment {
 private:
     float z, dz;
-    glm::vec3 p, dp, n, dn;
+    QVector3D p, dp, n, dn;
 
 public:
     ActiveSegment();
     ActiveSegment(Segment &segment);
     ~ActiveSegment();
     float getZ();
-    glm::vec3 getP();
-    glm::vec3 getN();
+    QVector3D getP();
+    QVector3D getN();
     void update();
 };
 

@@ -2,9 +2,10 @@
 #define POLYGON_H
 
 #include <climits>
+#include <cfloat>
 #include <vector>
 
-#include <glm/glm.hpp>
+#include <QMatrix4x4>
 
 #include "Vertex.h"
 #include "Edge.h"
@@ -16,7 +17,7 @@ private:
     std::vector<Edge> edges;
 
 public:
-    Polygon(std::vector<Vertex> &vertices, glm::mat4 MVP, int width, int height);
+    Polygon(std::vector<Vertex> &vertices, QMatrix4x4 &MVP, int width, int height);
     ~Polygon();
     bool operator <(Polygon &polygon);
     int getX();

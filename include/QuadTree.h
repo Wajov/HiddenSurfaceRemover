@@ -6,7 +6,6 @@
 #include <climits>
 #include <vector>
 
-#include <glm/glm.hpp>
 #include <QImage>
 #include <QColor>
 

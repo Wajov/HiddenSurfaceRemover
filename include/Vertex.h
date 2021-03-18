@@ -1,18 +1,18 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include <glm/glm.hpp>
+#include <QVector3D>
 
 class Vertex {
 private:
-    glm::vec3 position, normal;
+    QVector3D position, normal;
 
 public:
-    Vertex(glm::vec3 &position, glm::vec3 &normal);
+    Vertex(QVector3D &position, QVector3D &normal);
     ~Vertex();
-    glm::vec3 getPosition();
-    void setPosition(glm::vec3 &position);
-    glm::vec3 getNormal();
+    QVector3D getPosition();
+    void setPosition(QVector3D &position);
+    QVector3D getNormal();
 };
 
 #endif

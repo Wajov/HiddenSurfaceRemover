@@ -1,20 +1,20 @@
 #include "Vertex.h"
 
-Vertex::Vertex(glm::vec3 &position, glm::vec3 &normal) {
+Vertex::Vertex(QVector3D &position, QVector3D &normal) {
     this->position = position;
     this->normal = normal;
 }
 
 Vertex::~Vertex() {}
 
-glm::vec3 Vertex::getPosition() {
+QVector3D Vertex::getPosition() {
     return position;
 }
 
-void Vertex::setPosition(glm::vec3 &position) {
+void Vertex::setPosition(QVector3D &position) {
     this->position = position;
 }
 
-glm::vec3 Vertex::getNormal() {
+QVector3D Vertex::getNormal() {
     return normal;
 }

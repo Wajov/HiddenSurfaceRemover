@@ -17,17 +17,17 @@ Model::Model(const std::string &path) {
     xMin = yMin = zMin = FLT_MAX;
     xMax = yMax = zMax = -FLT_MAX;
     for (Vertex &vertex : vertices) {
-        glm::vec3 position = vertex.getPosition();
-        xMin = std::min(xMin, position.x);
-        xMax = std::max(xMax, position.x);
-        yMin = std::min(yMin, position.y);
-        yMax = std::max(yMax, position.y);
-        zMin = std::min(zMin, position.z);
-        zMax = std::max(zMax, position.z);
+        QVector3D position = vertex.getPosition();
+        xMin = std::min(xMin, position.x());
+        xMax = std::max(xMax, position.x());
+        yMin = std::min(yMin, position.y());
+        yMax = std::max(yMax, position.y());
+        zMin = std::min(zMin, position.z());
+        zMax = std::max(zMax, position.z());
     }
-    glm::vec3 center((xMin + xMax) / 2, (yMin + yMax) / 2, (zMin + zMax) / 2);
+    QVector3D center((xMin + xMax) / 2, (yMin + yMax) / 2, (zMin + zMax) / 2);
     for (Vertex &vertex : vertices) {
-        glm::vec3 position = vertex.getPosition() - center;
+        QVector3D position = vertex.getPosition() - center;
         vertex.setPosition(position);
     }
 }
@@ -43,8 +43,8 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 
 void Model::processMesh(aiMesh *mesh) {
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-        glm::vec3 position(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-        glm::vec3 normal(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+        QVector3D position(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+        QVector3D normal(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         vertices.push_back(Vertex(position, normal));
     }
 

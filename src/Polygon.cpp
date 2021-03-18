@@ -1,6 +1,6 @@
 #include "Polygon.h"
 
-Polygon::Polygon(std::vector<Vertex> &vertices, glm::mat4 MVP, int width, int height) {
+Polygon::Polygon(std::vector<Vertex> &vertices, QMatrix4x4 &MVP, int width, int height) {
     for (int i = 0; i < vertices.size() - 1; i++) {
         edges.push_back(Edge(vertices[i], vertices[i + 1], MVP, width, height));
     }

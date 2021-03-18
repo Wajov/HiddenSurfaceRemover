@@ -1,13 +1,15 @@
 #ifndef ACTIVE_EDGE_H
 #define ACTIVE_EDGE_H
 
+#include <QVector3D>
+
 #include "Edge.h"
 
 class ActiveEdge {
 private:
     int x, deltaX, deltaY, s;
     float z, dz;
-    glm::vec3 p, dp, n, dn;
+    QVector3D p, dp, n, dn;
 
 public:
     ActiveEdge();
@@ -15,8 +17,8 @@ public:
     ~ActiveEdge();
     int getX();
     float getZ();
-    glm::vec3 getP();
-    glm::vec3 getN();
+    QVector3D getP();
+    QVector3D getN();
     void update();
 };
 

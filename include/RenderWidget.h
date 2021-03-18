@@ -3,7 +3,8 @@
 
 #include <climits>
 
-#include <glm/glm.hpp>
+#include <QVector3D>
+#include <QMatrix4x4>
 #include <QWidget>
 #include <QFileDialog>
 #include <QVBoxLayout>

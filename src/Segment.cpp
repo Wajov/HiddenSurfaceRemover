@@ -1,6 +1,6 @@
 #include "Segment.h"
 
-Segment::Segment(int x, int deltaX, float z, float dz, glm::vec3 &p, glm::vec3 &dp, glm::vec3 &n, glm::vec3 &dn) {
+Segment::Segment(int x, int deltaX, float z, float dz, QVector3D &p, QVector3D &dp, QVector3D &n, QVector3D &dn) {
     this->x = x;
     this->deltaX = deltaX;
     this->z = z;
@@ -29,18 +29,18 @@ float Segment::getDz() {
     return dz;
 }
 
-glm::vec3 Segment::getP() {
+QVector3D Segment::getP() {
     return p;
 }
 
-glm::vec3 Segment::getDp() {
+QVector3D Segment::getDp() {
     return dp;
 }
 
-glm::vec3 Segment::getN() {
+QVector3D Segment::getN() {
     return n;
 }
 
-glm::vec3 Segment::getDn() {
+QVector3D Segment::getDn() {
     return dn;
 }

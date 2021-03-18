@@ -1,23 +1,23 @@
 #include "Edge.h"
 
-Edge::Edge(Vertex &source, Vertex &target, glm::mat4 MVP, int width, int height) {
+Edge::Edge(Vertex &source, Vertex &target, QMatrix4x4 &MVP, int width, int height) {
     Vertex s = source, t = target;
-    glm::vec4 p1 = MVP * glm::vec4(s.getPosition(), 1.0f), p2 = MVP * glm::vec4(t.getPosition(), 1.0f);
-    p1 /= p1.w;
-    p2 /= p2.w;
-    if (p1.y < p2.y) {
+    QVector4D p1 = MVP * QVector4D(s.getPosition(), 1.0f), p2 = MVP * QVector4D(t.getPosition(), 1.0f);
+    p1 /= p1.w();
+    p2 /= p2.w();
+    if (p1.y() < p2.y()) {
         std::swap(s, t);
         std::swap(p1, p2);
     }
     int x1, y1, x2, y2;
-    coordinateToPixel(p1.x, p1.y, x1, y1, width, height);
-    coordinateToPixel(p2.x, p2.y, x2, y2, width, height);
+    coordinateToPixel(p1.x(), p1.y(), x1, y1, width, height);
+    coordinateToPixel(p2.x(), p2.y(), x2, y2, width, height);
     x = x1;
     deltaX = x2 - x1;
     y = y1;
     deltaY = y2 - y1;
-    z = p1.z;
-    dz = (p2.z - p1.z) / deltaY;
+    z = p1.z();
+    dz = (p2.z() - p1.z()) / deltaY;
     p = s.getPosition();
     dp = (t.getPosition() - s.getPosition()) / (float)deltaY;
     n = s.getNormal();
@@ -66,18 +66,18 @@ float Edge::getDz() {
     return dz;
 }
 
-glm::vec3 Edge::getP() {
+QVector3D Edge::getP() {
     return p;
 }
 
-glm::vec3 Edge::getDp() {
+QVector3D Edge::getDp() {
     return dp;
 }
 
-glm::vec3 Edge::getN() {
+QVector3D Edge::getN() {
     return n;
 }
 
-glm::vec3 Edge::getDn() {
+QVector3D Edge::getDn() {
     return dn;
 }

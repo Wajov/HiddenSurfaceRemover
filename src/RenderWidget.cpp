@@ -111,11 +111,13 @@ void RenderWidget::imageMouseReleased() {
 
 void RenderWidget::imageMouseMoved(int x, int y) {
     if (press && lastX != INT_MIN && lastY != INT_MIN && (x != lastX || y != lastY)) {
-        glm::vec3 a = glm::normalize(glm::vec3((float)lastX / width - 0.5f, 0.5f - (float)lastY / height, 1.0f));
-        glm::vec3 b = glm::normalize(glm::vec3((float)x / width - 0.5f, 0.5f - (float)y / height, 1.0f));
-        glm::vec3 axis = glm::cross(a, b);
-        float angle = glm::dot(a, b);
-        glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), 10.0f * std::acos(angle), axis) * zBuffer->getRotate();
+        QVector3D a = QVector3D((float)lastX / width - 0.5f, 0.5f - (float)lastY / height, 1.0f).normalized();
+        QVector3D b = QVector3D((float)x / width - 0.5f, 0.5f - (float)y / height, 1.0f).normalized();
+        QVector3D axis = QVector3D::crossProduct(a, b);
+        float angle = std::acos(QVector3D::dotProduct(a, b));
+        QMatrix4x4 temp;
+        temp.rotate(angle / (float)M_PI * 1800.0f, axis);
+        QMatrix4x4 rotate = temp * zBuffer->getRotate();
         zBuffer->setRotate(rotate);
         calculateImage();
     }

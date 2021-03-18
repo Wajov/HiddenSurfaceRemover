@@ -1,6 +1,7 @@
 #ifndef NAIVE_Z_BUFFER_H
 #define NAIVE_Z_BUFFER_H
 
+#include <cfloat>
 #include <vector>
 
 #include <QImage>

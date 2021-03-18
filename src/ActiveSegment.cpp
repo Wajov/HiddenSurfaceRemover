@@ -17,11 +17,11 @@ float ActiveSegment::getZ() {
     return z;
 }
 
-glm::vec3 ActiveSegment::getP() {
+QVector3D ActiveSegment::getP() {
     return p;
 }
 
-glm::vec3 ActiveSegment::getN() {
+QVector3D ActiveSegment::getN() {
     return n;
 }
 
